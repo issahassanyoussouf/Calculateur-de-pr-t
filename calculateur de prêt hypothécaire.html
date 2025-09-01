@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculateur de prêt hypothécaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        input,
+        button {
+            margin: 6px 0;
+            padding: 8px;
+            width: 220px;
+        }
+
+        .resultat {
+            margin-top: 20px;
+            padding: 12px;
+            background: #e0ffe0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function calculer() {
+            let P = parseFloat(document.getElementById("montant").value);
+            let tauxAnnuel = parseFloat(document.getElementById("taux").value);
+            let duree = parseInt(document.getElementById("duree").value);
+
+            // Validation
+            if (isNaN(P) || P <= 0) { alert("Le montant que vous avez saisi est invalide, veuillez entrer un montant positif."); return; }
+            if (isNaN(tauxAnnuel) || tauxAnnuel <= 0) { alert("Taux invalide."); return; }
+            if (isNaN(duree) || duree <= 0) { alert("Durée invalide."); return; }
+
+            // Conversion du taux annuel en taux mensuel
+            let r = (tauxAnnuel / 100) / 12;
+            let n = duree * 12;
+
+            // Formule d’amortissement
+            let M = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+
+            // Affichage du résultat
+            document.getElementById("resultat").innerHTML =
+                `<p>Paiement mensuel : <strong>${M.toFixed(2)}</strong> Francs CFA</p>`;
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Calculateur de prêt hypothécaire</h2>
+
+    <label>Montant en Francs CFA :</label><br>
+    <input type="number" id="montant"><br>
+
+    <label>Taux d'intérêt annuel (%) :</label><br>
+    <input type="number" id="taux"><br>
+
+    <label>Durée (années) :</label><br>
+    <input type="number" id="duree"><br>
+
+    <button onclick="calculer()">Calculer</button>
+
+    <div id="resultat" class="resultat"></div>
+</body>
+
+</html>
